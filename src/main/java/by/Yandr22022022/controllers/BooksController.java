@@ -3,6 +3,7 @@ package by.Yandr22022022.controllers;
 import by.Yandr22022022.dao.BookDAO;
 import by.Yandr22022022.dao.PersonDAO;
 import by.Yandr22022022.models.Book;
+import by.Yandr22022022.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Component
 @RequestMapping("/books")
@@ -32,7 +34,15 @@ public class BooksController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("book", bookDAO.show(id));
-        model.addAttribute()
+
+        Optional<Person> reader = bookDAO.getBookReader(id);
+
+        if (reader.isPresent()) {
+            model.addAttribute("reader", reader.get());
+        } else {
+            model.addAttribute("people", personDAO.index());
+        }
+
         return "books/show";
     }
 
@@ -67,19 +77,23 @@ public class BooksController {
         bookDAO.update(id, book);
         return "redirect:/books";
     }
-//    @PatchMapping("/addReader/{id}")
-//    public String addReader(@PathVariable("id") int id) {
-//
-//        if (bindingResult.hasErrors())
-//            return "book/edit";
-//
-//        bookDAO.update(id, book);
-//        return "redirect:/books";
-//    }
+
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         bookDAO.delete(id);
         return "redirect:/books";
+    }
+
+    @PatchMapping("/{id}/release")
+    public String release(@PathVariable("id") int id) {
+        bookDAO.release(id);
+        return "redirect:/books/" + id;
+    }
+
+    @PatchMapping("/{id}/assign")
+    public String assign(@PathVariable("id") int id, @ModelAttribute Person selectedReader) {
+        bookDAO.assign(id, selectedReader);
+        return "redirect:/books/" + id;
     }
 }

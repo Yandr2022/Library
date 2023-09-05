@@ -1,5 +1,6 @@
 package by.Yandr22022022.dao;
 
+import by.Yandr22022022.models.Book;
 import by.Yandr22022022.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -26,14 +27,18 @@ public class PersonDAO {
         return jdbcTemplate.query("SELECT * from library.person where person.id=?", new Object[]{id}
                 , new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
     }
+    public List<Book> getBooksByPersonId(int id) {
+        return jdbcTemplate.query("SELECT * from library.book where book.person_id=?"
+                ,new Object[]{id}, new BeanPropertyRowMapper<>(Book.class));
+    }
     public void save(Person person) {
         jdbcTemplate.update("INSERT INTO library.person(full_name, year_of_birth) " +
                 "VALUES (?,?)", person.getFullName(), person.getYearOfBirth());
     }
 
     public void update(int id, Person updatedPerson) {
-        jdbcTemplate.update("UPDATE library.person SET full_name=?, year_of_birth=? WHERE id=?", updatedPerson.getFullName()
-                , updatedPerson.getYearOfBirth(),  updatedPerson.getId());
+        jdbcTemplate.update("UPDATE library.person SET full_name=?, year_of_birth=? WHERE id=?"
+                , updatedPerson.getFullName(), updatedPerson.getYearOfBirth(),  updatedPerson.getId());
     }
 
     public void delete(int id) {

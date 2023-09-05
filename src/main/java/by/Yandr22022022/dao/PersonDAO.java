@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
+
 @Component
 public class PersonDAO {
     private final JdbcTemplate jdbcTemplate;
@@ -26,6 +28,10 @@ public class PersonDAO {
     public Person show(int id) {
         return jdbcTemplate.query("SELECT * from library.person where person.id=?", new Object[]{id}
                 , new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
+    }
+    public Optional<Person> show(String fullName, int yearOfBirth) {
+        return jdbcTemplate.query("SELECT * from library.person where person.full_name=? AND person.year_of_birth=?", new Object[]{fullName, yearOfBirth}
+                , new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
     }
     public List<Book> getBooksByPersonId(int id) {
         return jdbcTemplate.query("SELECT * from library.book where book.person_id=?"

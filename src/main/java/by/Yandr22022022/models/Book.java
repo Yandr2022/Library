@@ -15,15 +15,15 @@ public class Book {
     private String author;
 
     @Min(value = 1800, message = "Year of Publication should be greater than 1800")
-    private int yearOfPublication;
+    private int year;
 
     public Book() {
     }
 
-    public Book( String title, String author, int yearOfPublication) {
+    public Book( String title, String author, int year) {
         this.title = title;
         this.author = author;
-        this.yearOfPublication = yearOfPublication;
+        this.year = year;
     }
 
     public int getId() {
@@ -50,11 +50,11 @@ public class Book {
         this.author = author;
     }
 
-    public int getYearOfPublication() {
-        return yearOfPublication;
+    public int getYear() {
+        return year;
     }
 
-    public void setYearOfPublication(int yearOfPublication) {
-        this.yearOfPublication = yearOfPublication;
+    public void setYear(int year) {
+        this.year = year;
     }
 }

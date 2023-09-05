@@ -29,7 +29,7 @@ public class PersonValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
         Optional<Person> temp = personDAO.show(person.getFullName(), person.getYearOfBirth());
-        if (temp.isPresent()) {
+        if (temp.isPresent() && temp.get().getId() != person.getId()) {
             errors.rejectValue("fullName", "", "This account is already taken");
             errors.rejectValue("yearOfBirth", "", "This account is already taken");
         }

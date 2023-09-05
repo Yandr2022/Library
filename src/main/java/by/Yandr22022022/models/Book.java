@@ -7,14 +7,14 @@ import javax.validation.constraints.Size;
 public class Book {
     private int id;
     @NotEmpty(message = "Title should not be empty")
-    @Size(min = 1, max = 80, message = "Title should be between 1 and 80 characters")
+    @Size(min = 1, max = 180, message = "Title should be between 1 and 180 characters")
     private String title;
 
     @NotEmpty(message = "Author Name should not be empty")
     @Size(min = 3, max = 50, message = "Author Name should be between 3 and 50 characters")
     private String author;
 
-    @Min(value = 1800, message = "Year of Publication should be greater than 1800")
+    @Min(value = 1600, message = "Year of Publication should be greater than 1600")
     private int year;
 
     public Book() {
